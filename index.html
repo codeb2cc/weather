@@ -46,12 +46,21 @@
           </div>
         </div>
         <div class="large-3 pull-9 columns">
-          <div class="section-container accordion" style="display: none;" data-section="accordion">
-            <section class="section {{ city.active }}" ng-repeat="city in cities" ng-click="selectCity($index)">
-              <p class="title">
-                <a href="#">{{ city.label_ZH }} - {{ city.label_EN }}</a>
-              </p>
-            </section>
+          <div class="row">
+            <div class="section-container accordion" style="display: none;" data-section="accordion">
+              <section class="section {{ city.active }}" ng-repeat="city in mainCity" ng-click="citySelect($index)">
+                <p class="title">
+                  <a href="#">{{ city.label_ZH }} - {{ city.label_EN }}</a>
+                </p>
+              </section>
+            </div>
+          </div>
+          <div class="row">
+            <div class="section">
+              <select class="chosen-select" ng-model="cityOption" ng-change="citySelect()" style="display: none;">
+                <option ng-repeat="city in otherCity" value="{{ city.code }}">{{ city.label_ZH }} - {{ city.label_EN }}</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

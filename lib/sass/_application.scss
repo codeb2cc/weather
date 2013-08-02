@@ -28,3 +28,7 @@
   }
 }
 
+// overwrite Chosen default
+.chosen-container .chosen-results {
+  max-height: 100px;
+}

@@ -43,7 +43,7 @@ module.exports = function(grunt) {
         dest: 'dist/js/foundation.js'
       },
       plugins: {
-        src: ['lib/js/plugins.js'],
+        src: ['lib/js/plugins.js', 'lib/js/plugins/*'],
         dest: 'dist/js/plugins.js'
       },
       app: {
