@@ -10,9 +10,9 @@
     <meta name="description" content="中国气象局气象探测中心基本反射率监测">
     <meta name="viewport" content="width=device-width">
 
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="/dist/css/app.css">
 
-    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <script src="/dist/js/vendor/modernizr-2.6.2.min.js"></script>
   </head>
   <body>
     <!--[if lt IE 7]>
@@ -36,7 +36,7 @@
                   <div class="preloader"></div>
                   <ul id="weather_orbit" data-orbit>
                     <li ng-repeat="view in views">
-                      <img src="{{ view.src }}" data-idx="{{ $index }}" onerror="this.src='/img/data-missing.png';"/>
+                      <img ng-src="{{ view.src }}" data-idx="{{ $index }}" onerror="this.src='/img/data-missing.png';"/>
                       <div class="orbit-caption">{{ view.text }}</div>
                     </li>
                   </ul>
@@ -68,17 +68,15 @@
     </section>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-2.0.3.min.js"><\/script>')</script>
-
-    <script src="js/foundation.min.js"></script>
-    <script src="js/foundation/foundation.orbit.js"></script>
-    <script src="js/foundation/foundation.section.js"></script>
+    <script>window.jQuery || document.write('<script src="/dist/js/vendor/jquery-2.0.3.min.js"><\/script>')</script>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script>window.angular || document.write('<script src="js/vendor/angular-1.0.7.min.js"><\/script>')</script>
+    <script>window.angular || document.write('<script src="/dist/js/vendor/angular-1.0.7.min.js"><\/script>')</script>
 
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/dist/js/foundation.js"></script>
+
+    <script src="/dist/js/plugins.js"></script>
+    <script src="/dist/js/app.js"></script>
 
     <script>
       var _gaq=[['_setAccount','UA-36025716-1'],['_trackPageview']];
