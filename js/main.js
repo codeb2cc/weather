@@ -74,7 +74,7 @@ function AppCtrl($scope) {
 
     var dateFmt1 = datetime.format('YYYY/MM/DD')
     var dateFmt2 = datetime.format('YYYYMMDD')
-    var srcPrefix = 'mocimg/radar/image/' + code + '/QREF/' + dateFmt1 + '/' + code + '.QREF000.' + dateFmt2 + '.'
+    var srcPrefix = '/mocimg/radar/image/' + code + '/QREF/' + dateFmt1 + '/' + code + '.QREF000.' + dateFmt2 + '.'
 
     datetime.minutes(Math.floor(datetime.minutes() / 10) * 10)
     datetime.seconds(0)

@@ -36,7 +36,7 @@
                   <div class="preloader"></div>
                   <ul id="weather_orbit" data-orbit>
                     <li ng-repeat="view in views">
-                      <img src="{{ view.src }}" />
+                      <img src="{{ view.src }}" data-idx="{{ $index }}" onerror="this.src='/img/data-missing.png';"/>
                       <div class="orbit-caption">{{ view.text }}</div>
                     </li>
                   </ul>
