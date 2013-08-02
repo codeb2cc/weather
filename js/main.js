@@ -1,4 +1,10 @@
-function orbitInit() {
+function orbitInit(ns) {
+  // Bind Orbit object for later use
+  $('#weather_orbit').on('orbit:ready', function (evt, orbit) {
+    // May lead to memory leak!
+    ns['weatherOrbit'] = orbit
+  })
+
   $(document).foundation('orbit', {
     animation: 'fade',
     timer_speed: 2500,
@@ -57,7 +63,7 @@ function AppCtrl($scope) {
     $scope.cities[idx]['active'] = 'active'
 
     updateViews($scope.cities[idx]['code'])
-    orbitInit()
+    NS.weatherOrbit._goto(0, true)
   }
 
   var updateViews = function (code) {
@@ -84,10 +90,13 @@ function AppCtrl($scope) {
   }
 }
 
+NS = { weatherOrbit: null }
+
 angular.element(document).ready(function () {
   angular.bootstrap(document)
 
   sectionInit()
+  orbitInit(NS)
 
   $('.accordion').show()
   $('.accordion section:first').click()

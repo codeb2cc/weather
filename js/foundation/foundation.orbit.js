@@ -253,7 +253,7 @@
       $(document).on('click', '[data-orbit-link]', self.link_custom);
       $(window).on('resize', self.compute_dimensions);
       $(window).on('load', self.compute_dimensions);
-      slides_container.trigger('orbit:ready');
+      slides_container.trigger('orbit:ready', [self]);
     };
 
     self.init();
