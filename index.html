@@ -58,6 +58,7 @@
           <div class="row">
             <div class="section">
               <select class="chosen-select" ng-model="cityOption" ng-change="citySelect()" style="display: none;">
+                <option></option>
                 <option ng-repeat="city in otherCity" value="{{ city.code }}">{{ city.label_ZH }} - {{ city.label_EN }}</option>
               </select>
             </div>
