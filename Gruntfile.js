@@ -11,6 +11,16 @@ module.exports = function(grunt) {
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
+    watch: {
+      gurntfile: {
+        files: 'Gruntfile.js',
+        tasks: ['jshint:gruntfile'],
+      },
+      sass: {
+        files: ['lib/sass/*.scss', 'lib/js/*.js', '*.html'],
+        tasks: ['default']
+      }
+    },
     clean: ['dist'],
     copy: {
       dist: {
@@ -92,7 +102,15 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       }
     },
-    watch: {}
+    connect: {
+      server: {
+        options: {
+          keepalive: true,
+          port: 5000,
+          base: '.'
+        }
+      }
+    }
   });
 
   // These plugins provide necessary tasks.
@@ -103,6 +121,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'clean', 'copy', 'sass', 'concat']);

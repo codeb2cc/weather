@@ -18,9 +18,9 @@
 .orbit-container {
   .orbit-slide-number {
       position: absolute;
-      top: 10px;
-      #{$default-float}: 10px;
-      font-size: 18px;
+      top: 4px;
+      #{$default-float}: 4px;
+      font-size: 16px;
       span { font-weight: 700; padding: $orbit-slide-number-padding;}
       color: #333;
       background: $orbit-slide-number-bg;
@@ -32,3 +32,4 @@
 .chosen-container .chosen-results {
   max-height: 100px;
 }
+
