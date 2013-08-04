@@ -48,7 +48,7 @@
         <div class="large-3 pull-9 columns">
           <div class="row">
             <div class="section-container accordion" style="display: none;" data-section="accordion">
-              <section class="section {{ city.active }}" ng-repeat="city in mainCity" ng-click="citySelect($index)">
+              <section id="city_{{ city.code }}" class="section" ng-repeat="city in cityInfo | filter:{ major: true }" ng-click="citySelect($event, city.code)">
                 <p class="title">
                   <a href="#">{{ city.label_ZH }} - {{ city.label_EN }}</a>
                 </p>
@@ -59,7 +59,7 @@
             <div class="section">
               <select class="chosen-select" ng-model="cityOption" ng-change="citySelect()" style="display: none;">
                 <option></option>
-                <option ng-repeat="city in otherCity" value="{{ city.code }}">{{ city.label_ZH }} - {{ city.label_EN }}</option>
+                <option ng-repeat="city in cityInfo | filter:{ major: false }" value="{{ city.code }}">{{ city.label_ZH }} - {{ city.label_EN }}</option>
               </select>
             </div>
           </div>
