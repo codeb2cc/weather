@@ -1,9 +1,14 @@
 {
   "name": "weather",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Weather Report Website",
+  "homepage": "http://weather.codeb2cc.com",
   "main": "index.html",
-  "author": "Codeb Fan",
+  "author": {
+    "name": "Codeb Fan",
+    "email": "codeb2cc@outlook.com",
+    "url": "http://codeb2cc.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.1",
