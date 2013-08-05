@@ -1,0 +1,9 @@
+*.swp
+.*
+package.json
+Gruntfile.js
+lib
+node_modules
+LICENSE
+README.md
+excludes.txt
