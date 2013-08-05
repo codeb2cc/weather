@@ -17,26 +17,29 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile'],
       },
       sass: {
-        files: ['lib/sass/*.scss', 'lib/js/*.js', '*.html'],
-        tasks: ['default']
+        files: ['lib/sass/*.scss'],
+        tasks: ['sass:debug']
+      },
+      javascript: {
+        files: ['lib/js/*.js'],
+        tasks: ['concat']
       }
     },
     clean: ['dist'],
     copy: {
-      dist: {
+      vendor: {
         files: [
           { expand: true, cwd: 'lib/', src: ['js/vendor/**'], dest: 'dist/' }
         ]
       }
     },
     sass: {
-      options: {
-        style: 'compressed',
+      debug: {
+        files: { 'dist/css/app.css': 'lib/sass/app.scss' },
       },
-      dist: {
-        files: {
-          'dist/css/app.css': 'lib/sass/app.scss'
-        }
+      release: {
+        files: { 'dist/css/app.css': 'lib/sass/app.scss' },
+        options: { style: 'compressed' }
       }
     },
     concat: {
@@ -124,7 +127,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'clean', 'copy', 'sass', 'concat']);
-  grunt.registerTask('release', ['jshint', 'clean', 'copy', 'sass', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'clean', 'copy:vendor', 'sass:debug', 'concat']);
+  grunt.registerTask('release', ['jshint', 'clean', 'copy:vendor', 'sass:release', 'concat', 'uglify']);
 
 };
