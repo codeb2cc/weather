@@ -113,6 +113,11 @@ module.exports = function(grunt) {
           base: '.'
         }
       }
+    },
+    karma: {
+      unit: {
+          configFile: 'test/karma.conf.js'
+      }
     }
   });
 
@@ -125,6 +130,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-karma');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'clean', 'copy:vendor', 'sass:debug', 'concat']);
