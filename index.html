@@ -48,16 +48,16 @@
         <div class="large-3 pull-9 columns">
           <div class="row">
             <div class="section-container accordion" data-section="accordion" com-section>
-              <section id="city_{{ city.code }}" class="section" ng-repeat="city in cityInfo | filter:{ major: true }" ng-click="citySelect($event, city.code)">
+              <section id="city_{{ city.code }}" class="section" ng-repeat="city in cityInfo | filter:{ major: true }">
                 <p class="title">
-                  <a href="#" ng-bind="city.label_ZH + ' - ' + city.label_EN"></a>
+                <a href="#{{ city.code }}" ng-bind="city.label_ZH + ' - ' + city.label_EN"></a>
                 </p>
               </section>
             </div>
           </div>
           <div class="row">
             <div class="section">
-              <select ng-model="cityOption" ng-change="citySelect()">
+              <select ng-model="cityOption">
                 <option></option>
                 <option ng-repeat="city in cityInfo | filter:{ major: false }" value="{{ city.code }}" com-chosen>{{ city.label_ZH }} - {{ city.label_EN }}</option>
               </select>
