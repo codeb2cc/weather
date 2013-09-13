@@ -1,20 +1,33 @@
 $default-font: "Helvetica Neue", "Helvetica", "Microsoft YaHei", Helvetica, Arial, sans-serif;
 
-.weather {
-  &.main {
-    margin-top: 40px;
-    min-width: 1000px;
-    font-family: $default-font;
-  }
+.weather-header {
+  margin-top: 40px;
+  min-width: 1000px;
+  font-family: $default-font;
 
   h1 {
+    color: #444243;
     font-family: $default-font;
   }
+}
+
+.weather-main {
+  font-family: $default-font;
 
   .orbit-container img {
     height: 483px;
     padding: 1.25em;
     background: #d8d8d8;
+  }
+}
+
+.weather-footer {
+  font-family: $default-font;
+
+  padding: 32px 0 10px;
+
+  p {
+    color: #737373;
   }
 }
 

@@ -19,14 +19,15 @@
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
 
-    <section class="weather main">
+    <section class="weather-header">
       <div class="row">
         <div class="large-12 columns">
-          <h1 class="header">中国气象局气象探测中心 <small>基本反射率监测</small></h1>
+          <h1 class="header">基本反射率监测 <small>中国气象局气象探测中心</small></h1>
           <hr />
         </div>
       </div>
-
+    </section>
+    <section class="weather-main">
       <div class="row" ng-controller="AppCtrl">
         <div class="large-9 push-3 columns">
           <div class="row">
@@ -36,7 +37,7 @@
                   <div class="preloader"></div>
                   <ul id="weather_orbit" data-orbit com-orbit>
                     <li ng-repeat="view in views">
-                      <img ng-src="{{ view.src }}" data-idx="{{ $index }}" onerror="this.src='/img/data-missing.png';"/>
+                      <img ng-src="{{ view.src }}" data-idx="{{ $index }}" com-img/>
                       <div class="orbit-caption">{{ view.text }}</div>
                     </li>
                   </ul>
@@ -48,16 +49,16 @@
         <div class="large-3 pull-9 columns">
           <div class="row">
             <div class="section-container accordion" data-section="accordion" com-section>
-              <section id="city_{{ city.code }}" class="section" ng-repeat="city in cityInfo | filter:{ major: true }" ng-click="citySelect($event, city.code)">
+              <section id="city_{{ city.code }}" class="section" ng-repeat="city in cityInfo | filter:{ major: true }">
                 <p class="title">
-                  <a href="#" ng-bind="city.label_ZH + ' - ' + city.label_EN"></a>
+                <a href="#{{ city.code }}" ng-bind="city.label_ZH + ' - ' + city.label_EN"></a>
                 </p>
               </section>
             </div>
           </div>
           <div class="row">
             <div class="section">
-              <select ng-model="cityOption" ng-change="citySelect()">
+              <select ng-model="cityOption">
                 <option></option>
                 <option ng-repeat="city in cityInfo | filter:{ major: false }" value="{{ city.code }}" com-chosen>{{ city.label_ZH }} - {{ city.label_EN }}</option>
               </select>
@@ -65,12 +66,16 @@
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="large-12 columns">
           <hr />
           <blockquote>基本反射率表示单位体积中降水粒子直径6次方的总和，它的值的大小反映了气象目标内部降水粒子的尺度和密度分布，用来表示气象目标的强度。<br /><cite class="right">百度百科</cite></blockquote>
-          <br />
+        </div>
+      </div>
+    </section>
+    <section class="weather-footer">
+      <div class="row">
+        <div class="large-12 columns">
           <div class="large-4 large-centered columns">
             <p class="copyright">Copyright &copy; 2013 - Codeb Fan</p>
           </div>
