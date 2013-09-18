@@ -6,3 +6,5 @@ celery-with-beanstalk==3.0
 pytz==2013d
 uWSGI==1.9.16
 requests==1.2.3
+numpy==1.7.1
+scipy==0.12.0
