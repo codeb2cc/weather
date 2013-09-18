@@ -1,4 +1,5 @@
 *.swp
+*.py[cod]
 .sass-cache
 dist
 node_modules
