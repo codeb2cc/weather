@@ -1,0 +1,8 @@
+PIL==1.1.7
+PyYAML==3.10
+Werkzeug==0.9.4
+celery==3.0.23
+celery-with-beanstalk==3.0
+pytz==2013d
+uWSGI==1.9.16
+requests==1.2.3
