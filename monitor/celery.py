@@ -19,12 +19,17 @@ celery.conf.update(
         'boardcast-morning': {
             'task': 'weather.monitor.periodic.boardcast',
             'schedule': crontab(hour=8, minute=0, day_of_week=[1,2,3,4,5]),
-            'args': ('Z9010', '北京当前天气雷达数据'),
+            'args': ('Z9010', '北京地区当前气象状况 - 基本反射率（降水）'),
         },
         'boardcast-evening': {
             'task': 'weather.monitor.periodic.boardcast',
             'schedule': crontab(hour=18, minute=0, day_of_week=[1,2,3,4,5]),
-            'args': ('Z9010', '北京当前天气雷达数据'),
+            'args': ('Z9010', '北京地区当前气象状况 - 基本反射率（降水）'),
+        },
+        'sampling': {
+            'task': 'weather.monitor.periodic.sampling',
+            'schedule': timedelta(minutes=1),
+            'args': ('Z9010', '北京地区降雨预警 [下雨][下雨]'),
         },
     },
     ADMINS = (('Codeb Fan', 'codeb2cc@163.com'), ),
