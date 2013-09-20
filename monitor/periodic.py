@@ -81,7 +81,7 @@ def boardcast(code, message):
         _api = 'https://upload.api.weibo.com/2/statuses/upload.json'
         _param = {
             'access_token': conf.WEIBO_TOKEN,
-            'status': '%s - %s http://weather.codeb2cc.com/' % (t_now.strftime('%Y/%m/%d %H:%M'), message),
+            'status': '%s - %s http://weather.codeb2cc.com/#/%s' % (t_now.strftime('%Y/%m/%d %H:%M'), message, code),
         }
         _file = { 'pic': temp_file }
 
