@@ -104,7 +104,7 @@ def sampling(code, message):
         _radar_defer = 5
         _sample_frame = 8
         _sample_rate = 15
-        _sample_level_threshold = 20
+        _sample_level_threshold = 25
         _sample_denoise_level = 2
         _sample_area_threshold = 480 * 480 / 100
         _sample_warn_threshold = 4
