@@ -28,7 +28,7 @@ celery.conf.update(
         },
         'sampling': {
             'task': 'weather.monitor.periodic.sampling',
-            'schedule': timedelta(minutes=1),
+            'schedule': timedelta(minutes=30),
             'args': ('Z9010', '北京地区降雨预警 [下雨][下雨]'),
         },
     },

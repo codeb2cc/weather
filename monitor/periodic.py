@@ -25,7 +25,7 @@ logger = celery.log.get_default_logger()
 @celery.task(ignore_result=True)
 def boardcast(code, message):
     try:
-        logger.info('Monitor Start Boardcast: %s' % code, message)
+        logger.info('Monitor Start Boardcast: %s' % code)
         _radar_frame = 10
         _radar_interval = 5     # 雷达数据采样频率
         _radar_defer = 5        # 监测数据有延迟
