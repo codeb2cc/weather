@@ -197,7 +197,7 @@ def sampling(code, message):
         if ref_intercep > min(b_a[1], b_b[1]) and ref_intercep < max(b_a[1], b_b[1]):
             logger.info('  Going to rain!')
             # Update weibo
-            boardcast.apply_async((code, message))
+            boardcast(code, message)
 
             # Lock periodic task
             lock_datetime = datetime.datetime.now() + datetime.timedelta(minutes=_lock_minutes)
