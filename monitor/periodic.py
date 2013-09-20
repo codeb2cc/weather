@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import, division, print_function, with_statement
 
+import time
 import datetime
 import tempfile
 import cStringIO
@@ -17,6 +18,7 @@ from .utils import binarize, denoise
 from .utils import calculate_centroid, calculate_path, calculate_zone
 
 from .. import conf
+from ..storage import memcache
 
 
 logger = celery.log.get_default_logger()
@@ -107,16 +109,13 @@ def sampling(code, message):
         _sample_area_threshold = 480 * 480 / 100
         _sample_warn_threshold = 4
 
-        _lock_file = '/tmp/weather.lock'
-        _lock_minutes = 60 * 2
+        _lock_key = 'sampling.lock.%s' % code
+        _lock_minutes = 60 * 3
 
         # Check task lock
         try:
-            lock_file = open(_lock_file)
-            lock_timestamp = int(lock_file.read())
-            lock_datetime = datetime.datetime.fromtimestamp(lock_timestamp)
-
-            if datetime.datetime.now() < lock_datetime:
+            lock_timestamp = memcache.get(_lock_key)
+            if lock_timestamp and datetime.datetime.fromtimestamp(lock_timestamp) > datetime.datetime.now():
                 logger.warn('!! Task is locked until %s' % lock_datetime)
                 return False
         except:
@@ -201,9 +200,7 @@ def sampling(code, message):
 
             # Lock periodic task
             lock_datetime = datetime.datetime.now() + datetime.timedelta(minutes=_lock_minutes)
-            f = open(_lock_file, 'w')
-            f.write(lock_datetime.strftime('%s'))
-            f.close()
+            memcache.set(_lock_key, time.mktime(lock_datetime.timetuple()))
 
         return True
     except Exception as e:
