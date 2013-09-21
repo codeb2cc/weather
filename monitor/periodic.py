@@ -177,10 +177,11 @@ def sampling(code, message):
 
         # Nimbus path and affected zone
         slope, intercep = calculate_path(centroids)
-        logger.info('  Nimbus path: Y = %d * X + %d' % (slope, intercep))
+        logger.info('  Nimbus path: Y = %f * X + %f' % (slope, intercep))
 
         sample_points = []
         mask = binarize(sample_images[-1], _sample_level_threshold)
+        mask = denoise(mask, _sample_denoise_level + 1)
         sample_pixels = mask.load()
         for y in xrange(mask.size[1]):
             for x in xrange(mask.size[0]):
