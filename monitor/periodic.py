@@ -106,7 +106,7 @@ def sampling(code, message):
         _sample_rate = 15
         _sample_level_threshold = 25
         _sample_denoise_level = 2
-        _sample_area_threshold = 480 * 480 / 100
+        _sample_area_threshold = 480 * 480 / 400
         _sample_warn_threshold = 4
 
         _lock_key = 'sampling.lock.%s' % code

@@ -133,7 +133,6 @@ def binarize(image, threshold=0):
 def denoise(image, level=2):
     for i in xrange(level):
         image = image.filter(ImageFilter.MinFilter(size=3))
-        image = image.filter(ImageFilter.MinFilter(size=3))
 
     return image
 
