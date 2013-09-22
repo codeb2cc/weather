@@ -115,9 +115,11 @@ def sampling(code, message):
         # Check task lock
         try:
             lock_timestamp = memcache.get(_lock_key)
-            if lock_timestamp and datetime.datetime.fromtimestamp(lock_timestamp) > datetime.datetime.now():
-                logger.warn('!! Task is locked until %s' % lock_datetime)
-                return False
+            if lock_timestamp:
+                lock_datetime = datetime.datetime.fromtimestamp(lock_timestamp)
+                if lock_datetime > datetime.datetime.now():
+                    logger.warn('!! Task is locked until %s' % lock_datetime)
+                    return False
         except:
             traceback.print_exc()
 
