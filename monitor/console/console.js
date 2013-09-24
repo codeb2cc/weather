@@ -1,18 +1,46 @@
-$('.image-a').on('click', function (evt) {
-  $('#modal_title').html(evt.target.title)
-  $('#modal_image').attr('src', evt.target.src)
-})
+$(function () {
+  var currentPage = 0
+  var totalPage = 12
 
-$('.pagination').on('click', 'li', function (evt) {
-  var idx = $(this).data('idx')
-  var timestamp = (new Date()).getTime()
+  $('#current_page').text(currentPage + 1)
+  $('#total_page').text(totalPage)
 
-  $('.pagination li.active').removeClass('active')
-  $(this).addClass('active')
+  $('.image-a').on('click', function (evt) {
+    $('#modal_title').html(evt.target.title)
+    $('#modal_image').attr('src', evt.target.src)
+  })
 
-  $('#origin_image').attr('src', 'img/origin-' + idx + '.gif?_t=' + timestamp)
-  $('#bi_image').attr('src', 'img/bi-' + idx + '.jpeg?_t=' + timestamp)
-  $('#extract_image').attr('src', 'img/extract-' + idx + '.jpeg?_t=' + timestamp)
-  $('#path_image').attr('src', 'img/path-' + idx + '.jpeg?_t=' + timestamp)
-  $('#area_image').attr('src', 'img/area-' + idx + '.jpeg?_t=' + timestamp)
+  $('.pager').on('click', 'li', function (evt) {
+    evt.stopPropagation()
+
+    if (currentPage > 0 && $(this).hasClass('previous')) {
+      currentPage -= 1
+    } else if (currentPage < totalPage - 1 && $(this).hasClass('next')) {
+      currentPage += 1
+    } else {
+      return false
+    }
+
+    if (currentPage > 0) {
+      $('.pager .previous').removeClass('disabled')
+    } else {
+      $('.pager .previous').addClass('disabled')
+    }
+    if (currentPage < totalPage - 1) {
+      $('.pager .next').removeClass('disabled')
+    } else {
+      $('.pager .next').addClass('disabled')
+    }
+
+    var timestamp = (new Date()).getTime()
+
+    $('#current_page').text(currentPage + 1)
+
+    $('#raw_image').attr('src', 'img/raw-' + currentPage + '.gif?_t=' + timestamp)
+    $('#bi_image').attr('src', 'img/bi-' + currentPage + '.jpeg?_t=' + timestamp)
+    $('#extract_image').attr('src', 'img/extract-' + currentPage + '.jpeg?_t=' + timestamp)
+    $('#path_image').attr('src', 'img/path-' + currentPage + '.jpeg?_t=' + timestamp)
+    $('#zone_image').attr('src', 'img/zone-' + currentPage + '.jpeg?_t=' + timestamp)
+  })
+
 })
