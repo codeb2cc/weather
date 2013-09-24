@@ -2,15 +2,15 @@
 
 from __future__ import absolute_import, division, print_function, with_statement
 
+import math
 import time
 import datetime
 import tempfile
 import cStringIO
-import logging
 import traceback
 
 import requests
-import Image, ImageDraw, ImageFont
+from PIL import Image
 
 from .celery import celery
 from .utils import merge_gif
@@ -38,13 +38,14 @@ def boardcast(code, message):
         logger.info('  Construct radar images urls')
         radar_urls = []
         for i in xrange(_radar_frame + _radar_defer):
-            if i < _radar_defer: continue
+            if i < _radar_defer:
+                continue
             t = t_utcnow - datetime.timedelta(minutes=(_radar_interval * (i + 1)))
             r = 'mocimg/radar/image/%(code)s/QREF/%(date)s/%(code)s.QREF000.%(datetime)s.GIF' % {
-                    'code': code,
-                    'date': t.strftime('%Y/%m/%d'),
-                    'datetime': t.strftime('%Y%m%d.%H') + '%02d' % (t.minute - t.minute % _radar_interval) + '00',
-                }
+                'code': code,
+                'date': t.strftime('%Y/%m/%d'),
+                'datetime': t.strftime('%Y%m%d.%H') + '%02d' % (t.minute - t.minute % _radar_interval) + '00',
+            }
             radar_urls.append(r)
         radar_urls.reverse()
 
@@ -85,7 +86,7 @@ def boardcast(code, message):
             'access_token': conf.WEIBO_TOKEN,
             'status': '%s - %s http://weather.codeb2cc.com/#/%s' % (t_now.strftime('%Y/%m/%d %H:%M'), message, code),
         }
-        _file = { 'pic': temp_file }
+        _file = {'pic': temp_file}
 
         r = requests.post(_api, data=_param, files=_file)
         r = r.json()
@@ -102,15 +103,15 @@ def sampling(code, message):
         logger.info('Monitor Start Sampling: %s' % code)
         _radar_interval = 5
         _radar_defer = 5
-        _sample_frame = 8
-        _sample_rate = 15
+        _sample_frame = 12
+        _sample_rate = 10
         _sample_level_threshold = 25
         _sample_denoise_level = 2
-        _sample_area_threshold = 480 * 480 / 400
+        _sample_area_threshold = 480 * 480 / 100 / 4
         _sample_warn_threshold = 4
 
         _lock_key = 'sampling.lock.%s' % code
-        _lock_minutes = 60 * 3
+        _lock_minutes = 60 * 6
 
         # Check task lock
         try:
@@ -132,17 +133,18 @@ def sampling(code, message):
         while count > 0:
             try:
                 url = '/mocimg/radar/image/%(code)s/QREF/%(date)s/%(code)s.QREF000.%(datetime)s.GIF' % {
-                        'code': code,
-                        'date': dt.strftime('%Y/%m/%d'),
-                        'datetime': dt.strftime('%Y%m%d.%H') + '%02d' % dt.minute + '00',
-                    }
+                    'code': code,
+                    'date': dt.strftime('%Y/%m/%d'),
+                    'datetime': dt.strftime('%Y%m%d.%H') + '%02d' % dt.minute + '00',
+                }
 
                 r = requests.get('http://weather.codeb2cc.com/' + url)
 
                 if r.status_code == requests.codes.ok:
                     im = Image.open(cStringIO.StringIO(r.content))
                     raw_images.append(im)
-                    if len(raw_images) >= _sample_frame: break
+                    if len(raw_images) >= _sample_frame:
+                        break
                 else:
                     count -= 1
 
@@ -159,7 +161,7 @@ def sampling(code, message):
         logger.info('  Processing %d sample images' % len(raw_images))
 
         raw_images.reverse()
-        sample_images = [ im.crop((0, 0, 480, 480)).convert('RGB') for im in raw_images ]
+        sample_images = [raw_im.crop((0, 0, 480, 480)).convert('RGB') for raw_im in raw_images]
 
         centroids = []
         for im in sample_images:
@@ -196,7 +198,13 @@ def sampling(code, message):
         # Affected?
         ref_point = (240, 240)
         ref_intercep = ref_point[0] - slope * ref_point[1]
-        if ref_intercep > min(b_a[1], b_b[1]) and ref_intercep < max(b_a[1], b_b[1]):
+        ref_dist = (
+            math.sqrt(pow(centroids[0][0] - ref_point[0], 2) + pow(centroids[0][1] - ref_point[1], 2)),
+            math.sqrt(pow(centroids[-1][0] - ref_point[0], 2) + pow(centroids[-1][1] - ref_point[1], 2)),
+        )
+        if ref_intercep > min(b_a[1], b_b[1]) \
+                and ref_intercep < max(b_a[1], b_b[1]) \
+                and ref_dist[0] > ref_dist[1]:
             logger.info('  Going to rain!')
             # Update weibo
             boardcast(code, message)
