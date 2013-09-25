@@ -138,7 +138,7 @@ def sampling(code, message):
                     'datetime': dt.strftime('%Y%m%d.%H') + '%02d' % dt.minute + '00',
                 }
 
-                r = requests.get('http://weather.codeb2cc.com/' + url)
+                r = requests.get('http://weather.codeb2cc.com' + url)
 
                 if r.status_code == requests.codes.ok:
                     im = Image.open(cStringIO.StringIO(r.content))
