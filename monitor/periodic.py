@@ -3,7 +3,6 @@
 from __future__ import absolute_import, division, print_function, with_statement
 
 import math
-import time
 import datetime
 import tempfile
 import cStringIO
@@ -11,6 +10,7 @@ import traceback
 
 import requests
 from PIL import Image
+from pylibmc import NotFound
 
 from .celery import celery
 from .utils import merge_gif
@@ -111,18 +111,6 @@ def sampling(code, message):
         _sample_warn_threshold = 4
 
         _lock_key = 'sampling.lock.%s' % code
-        _lock_minutes = 60 * 6
-
-        # Check task lock
-        try:
-            lock_timestamp = memcache.get(_lock_key)
-            if lock_timestamp:
-                lock_datetime = datetime.datetime.fromtimestamp(lock_timestamp)
-                if lock_datetime > datetime.datetime.now():
-                    logger.warn('!! Task is locked until %s' % lock_datetime)
-                    return False
-        except:
-            traceback.print_exc()
 
         dt = datetime.datetime.utcnow()
         dt = dt - datetime.timedelta(minutes=(_radar_interval * _radar_defer))
@@ -206,12 +194,24 @@ def sampling(code, message):
                 and ref_intercep < max(b_a[1], b_b[1]) \
                 and ref_dist[0] > ref_dist[1]:
             logger.info('  Going to rain!')
-            # Update weibo
-            boardcast(code, message)
 
-            # Lock periodic task
-            lock_datetime = datetime.datetime.now() + datetime.timedelta(minutes=_lock_minutes)
-            memcache.set(_lock_key, time.mktime(lock_datetime.timetuple()))
+            _lock = memcache.get(_lock_key)
+            if _lock:
+                logger.warn('!! Boardcast is locked [%s]' % _lock)
+            else:
+                # Update weibo
+                boardcast(code, message)
+
+                # Lock periodic task
+                memcache.set(_lock_key, 3)
+        else:
+            try:
+                # Release boardcast lock
+                _lock = memcache.decr(_lock_key)
+                if not _lock:
+                    memcache.delete(_lock_key)
+            except NotFound:
+                pass
 
         return True
     except Exception as e:
