@@ -13,7 +13,7 @@ celery.conf.update(
     CELERY_TIMEZONE='Asia/Shanghai',
     CELERY_IMPORTS=('weather.monitor.periodic', ),
     CELERY_IGNORE_RESULT=True,
-    CELERY_ACCEPT_CONTENT=['pickle', ],
+    CELERY_ACCEPT_CONTENT=['pickle', 'json', ],
     CELERY_TASK_SERIALIZER='pickle',
     CELERYD_MAX_TASKS_PER_CHILD=100,
     CELERYBEAT_SCHEDULE={
