@@ -7,12 +7,14 @@ from datetime import timedelta
 from celery import Celery
 
 
-celery = Celery('weather', broker='beanstalk://localhost:11300')
+celery = Celery('weather', broker='redis://localhost:6379/2')
 
 celery.conf.update(
     CELERY_TIMEZONE='Asia/Shanghai',
     CELERY_IMPORTS=('weather.monitor.periodic', ),
     CELERY_IGNORE_RESULT=True,
+    CELERY_ACCEPT_CONTENT=['pickle', ],
+    CELERY_TASK_SERIALIZER='pickle',
     CELERYD_MAX_TASKS_PER_CHILD=100,
     CELERYBEAT_SCHEDULE={
         'sampling-010': {
