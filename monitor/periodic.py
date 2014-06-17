@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import, division, print_function, with_statement
 
+import os
 import math
 import datetime
 import tempfile
@@ -9,7 +10,7 @@ import cStringIO
 import traceback
 
 import requests
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 from pylibmc import NotFound
 
 from .celery import celery
@@ -40,18 +41,19 @@ def boardcast(code, message):
         for i in xrange(_radar_frame + _radar_defer):
             if i < _radar_defer:
                 continue
-            t = t_utcnow - datetime.timedelta(minutes=(_radar_interval * (i + 1)))
+            delta = datetime.timedelta(minutes=(_radar_interval * (i + 1)))
+            t = t_utcnow - delta
             r = 'mocimg/radar/image/%(code)s/QREF/%(date)s/%(code)s.QREF000.%(datetime)s.GIF' % {
                 'code': code,
                 'date': t.strftime('%Y/%m/%d'),
                 'datetime': t.strftime('%Y%m%d.%H') + '%02d' % (t.minute - t.minute % _radar_interval) + '00',
             }
-            radar_urls.append(r)
+            radar_urls.append((r, t_now - delta))
         radar_urls.reverse()
 
         logger.info('  Fetch radar images')
         radar_images = []
-        for url in radar_urls:
+        for url, t in radar_urls:
             try:
                 r = requests.get('http://weather.codeb2cc.com/' + url)
 
@@ -59,7 +61,7 @@ def boardcast(code, message):
                     continue
 
                 image = Image.open(cStringIO.StringIO(r.content))
-                radar_images.append(image)
+                radar_images.append((image, t))
             except Exception as e:
                 logger.error(e)
                 traceback.print_exc()
@@ -70,10 +72,18 @@ def boardcast(code, message):
             return
 
         logger.info('  Generate radar GIF')
+        font = ImageFont.truetype(os.path.join(os.path.dirname(__file__), 'console/font.ttf'), 22)
         radar_cropped = []
-        for image in radar_images:
+        for image, t in radar_images:
             # 新浪微博GIF图片大小限制为450x450, 超出限制的图片将不能播放
             im = image.crop((20, 20, 460, 460))
+
+            # 添加时间戳
+            draw = ImageDraw.Draw(im)
+            draw.rectangle((8, 8, 150, 36), fill=1)
+            draw.text((14, 10), t.strftime('%m/%d %H:%M'), fill=0, font=font)
+            del draw
+
             radar_cropped.append(im)
 
         temp_file = tempfile.TemporaryFile()
