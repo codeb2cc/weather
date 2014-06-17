@@ -36,11 +36,11 @@ $(function () {
 
     $('#current_page').text(currentPage + 1)
 
-    $('#raw_image').attr('src', 'img/raw-' + currentPage + '.gif?_t=' + timestamp)
-    $('#bi_image').attr('src', 'img/bi-' + currentPage + '.jpeg?_t=' + timestamp)
-    $('#extract_image').attr('src', 'img/extract-' + currentPage + '.jpeg?_t=' + timestamp)
-    $('#path_image').attr('src', 'img/path-' + currentPage + '.jpeg?_t=' + timestamp)
-    $('#zone_image').attr('src', 'img/zone-' + currentPage + '.jpeg?_t=' + timestamp)
+    $('#raw_image').attr('src', 'samples/raw-' + currentPage + '.gif?_t=' + timestamp)
+    $('#bi_image').attr('src', 'out/bi-' + currentPage + '.jpeg?_t=' + timestamp)
+    $('#extract_image').attr('src', 'out/extract-' + currentPage + '.jpeg?_t=' + timestamp)
+    $('#path_image').attr('src', 'out/path-' + currentPage + '.jpeg?_t=' + timestamp)
+    $('#zone_image').attr('src', 'out/zone-' + currentPage + '.jpeg?_t=' + timestamp)
   })
 
 })
