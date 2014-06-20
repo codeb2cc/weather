@@ -30,7 +30,7 @@ celery.conf.update(
         'sampling-210': {
             'task': 'weather.monitor.periodic.sampling',
             'schedule': timedelta(minutes=20),
-            'args': ('Z9210', '上海地区降雨预警 [下雨][下雨]'),
+            'args': ('Z9002', '上海地区降雨预警 [下雨][下雨]'),
         },
     },
     ADMINS=(('Codeb Fan', 'codeb2cc@163.com'), ),
